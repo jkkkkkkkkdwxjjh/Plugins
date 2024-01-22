@@ -35,7 +35,7 @@ WARNS = {}
 PREV_MESSAGE = {}
 
 
-@on_message("block", allow_user=True)
+@on_message("block", allow_stan=True)
 async def block_user(client: Client, message: Message):
     if len(message.command) > 1:
         try:
@@ -67,7 +67,7 @@ async def block_user(client: Client, message: Message):
         await hellbot.error(message, f"`Couldn't block {user.mention}`")
 
 
-@on_message("unblock", allow_user=True)
+@on_message("unblock", allow_stan=True)
 async def unblock_user(client: Client, message: Message):
     if len(message.command) > 1:
         try:
@@ -94,7 +94,7 @@ async def unblock_user(client: Client, message: Message):
         await hellbot.error(message, f"`Couldn't unblock {user.mention}`")
 
 
-@on_message(["allow", "approve"], allow_user=True)
+@on_message(["allow", "approve"], allow_stan=True)
 async def allow_pm(client: Client, message: Message):
     if len(message.command) > 1:
         try:
