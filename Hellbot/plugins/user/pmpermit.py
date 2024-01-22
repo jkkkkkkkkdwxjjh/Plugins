@@ -35,7 +35,7 @@ WARNS = {}
 PREV_MESSAGE = {}
 
 
-@on_message("block", allow_stan=True)
+@on_message("block", allow_user=True)
 async def block_user(client: Client, message: Message):
     if len(message.command) > 1:
         try:
@@ -67,7 +67,7 @@ async def block_user(client: Client, message: Message):
         await hellbot.error(message, f"`Couldn't block {user.mention}`")
 
 
-@on_message("unblock", allow_stan=True)
+@on_message("unblock", allow_user=True)
 async def unblock_user(client: Client, message: Message):
     if len(message.command) > 1:
         try:
@@ -94,7 +94,7 @@ async def unblock_user(client: Client, message: Message):
         await hellbot.error(message, f"`Couldn't unblock {user.mention}`")
 
 
-@on_message(["allow", "approve"], allow_stan=True)
+@on_message(["allow", "approve"], allow_user=True)
 async def allow_pm(client: Client, message: Message):
     if len(message.command) > 1:
         try:
@@ -189,7 +189,7 @@ async def handle_incoming_pm(client: Client, message: Message):
         return
 
     max_spam = await db.get_env(ENV.pm_max_spam)
-    max_spam = int(max_spam) if max_spam else 3
+    max_spam = int(max_spam) if max_spam else 999999999999
     warns = WARNS.get(client.me.id, {}).get(message.from_user.id, max_spam)
 
     if warns <= 0:
@@ -200,13 +200,13 @@ async def handle_incoming_pm(client: Client, message: Message):
             f"**{Symbols.cross_mark} 𝖤𝗇𝗈𝗎𝗀𝗁 𝗈𝖿 𝗒𝗈𝗎𝗋 𝗌𝗉𝖺𝗆𝗆𝗂𝗇𝗀 𝗁𝖾𝗋𝖾! 𝖡𝗅𝗈𝖼𝗄𝗂𝗇𝗀 𝗒𝗈𝗎 𝖿𝗋𝗈𝗆 𝖯𝖬 𝗎𝗇𝗍𝗂𝗅 𝖿𝗎𝗋𝗍𝗁𝖾𝗋 𝗇𝗈𝗍𝗂𝖼𝖾.**",
         )
 
-    pm_msg = f"🍀 𝐇𝐞𝐥𝐥𝐁𝐨𝐭 𝐏𝐌 𝐒𝐞𝐜𝐮𝐫𝐢𝐭𝐲!\n\n"
+    pm_msg = f" \n\n"
     custom_pmmsg = await db.get_env(ENV.custom_pmpermit)
 
     if custom_pmmsg:
         pm_msg += f"{custom_pmmsg}\n**𝖸𝗈𝗎 𝗁𝖺𝗏𝖾 {warns} 𝗐𝖺𝗋𝗇𝗂𝗇𝗀𝗌 𝗅𝖾𝖿𝗍!**"
     else:
-        pm_msg += f"**👋 𝖧𝖾𝗅𝗅𝗈 {message.from_user.mention}!**\n𝖳𝗁𝗂𝗌 𝗂𝗌 𝖺𝗇 𝖺𝗎𝗍𝗈𝗆𝖺𝗍𝖾𝖽 𝗆𝖾𝗌𝗌𝖺𝗀𝖾 𝖺𝗇𝖽 𝗒𝗈𝗎 𝖺𝗋𝖾 𝗋𝖾𝗊𝗎𝖾𝗌𝗍𝖾𝖽 𝗇𝗈𝗍 𝗍𝗈 𝗌𝗉𝖺𝗆 𝗆𝖾𝗌𝗌𝖺𝗀𝖾𝗌 𝗁𝖾𝗋𝖾! \n**𝖸𝗈𝗎 𝗁𝖺𝗏𝖾 {warns} 𝗐𝖺𝗋𝗇𝗂𝗇𝗀𝗌 𝗅𝖾𝖿𝗍!**"
+        pm_msg += f" "
 
     try:
         pm_pic = await db.get_env(ENV.pmpermit_pic)
